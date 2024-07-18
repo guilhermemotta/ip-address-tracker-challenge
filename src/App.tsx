@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import * as React from "react";
+
+import { Title } from "./components/title";
+import InfoPanel from "./components/info-panel";
+import Layout from "./components/layout";
+import SearchBar from "./components/search-bar";
+
+const ipfyApiUrl = "https://api.ipify.org?format=json";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentIpAddr, setCurrentIpAddr] = React.useState("");
+
+  React.useEffect(() => {
+    let ignore = false;
+
+    const fetchCurrentIp = async () => {
+      try {
+        const response = await fetch(ipfyApiUrl);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const data: { ip: string } = await response.json();
+        if (!ignore) {
+          setCurrentIpAddr(data.ip);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCurrentIp();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout>
+      <Title>IP Adress Tracker</Title>
+
+      <SearchBar />
+
+      <InfoPanel
+        ipAdress={currentIpAddr}
+        location="Brooklin, NY 10001"
+        timezone="UTC -05:00"
+        isp="SpaceX Starlink"
+      />
+    </Layout>
+  );
 }
 
-export default App
+export default App;
