@@ -7,7 +7,7 @@ function SearchBar() {
     <div style={{ display: "flex", flexDirection: "row" }}>
       <SearchInput placeholder="Search for any IP address or domain" />
       <SearchBtn>
-        <img src={IconArrow} />
+        <img src={IconArrow.src} />
       </SearchBtn>
     </div>
   );
