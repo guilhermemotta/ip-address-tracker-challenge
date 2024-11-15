@@ -4,6 +4,9 @@ import { Title } from "./components/title";
 import InfoPanel from "./components/info-panel";
 import Layout from "./components/layout";
 import SearchBar from "./components/search-bar";
+import AppMap from "./components/map";
+import HUD from "./components/hud";
+import Image from "next/image";
 
 const ipfyApiUrl = "https://api.ipify.org?format=json";
 
@@ -37,16 +40,31 @@ function App() {
 
   return (
     <Layout>
-      <Title>IP Adress Tracker</Title>
+      <picture>
+        <source
+          media="(max-width: 375px)"
+          srcSet="assets/pattern-bg-mobile.png"
+        />
+        <source
+          media="(min-width: 376px)"
+          srcSet="assets/pattern-bg-desktop.png"
+        />
+        <img src="assets/pattern-bg-mobile.png" alt="background pattern" />
+      </picture>
+      <AppMap lat={40.731253} long={-73.996139} />
 
-      <SearchBar />
+      <HUD>
+        <Title>IP Adress Tracker</Title>
 
-      <InfoPanel
-        ipAdress={currentIpAddr}
-        location="Brooklin, NY 10001"
-        timezone="UTC -05:00"
-        isp="SpaceX Starlink"
-      />
+        <SearchBar />
+
+        <InfoPanel
+          ipAdress={currentIpAddr}
+          location="Brooklin, NY 10001"
+          timezone="UTC -05:00"
+          isp="SpaceX Starlink"
+        />
+      </HUD>
     </Layout>
   );
 }
