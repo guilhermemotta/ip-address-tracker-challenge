@@ -12,6 +12,11 @@ function Layout({ children }: LayoutProps) {
 const Wrapper = styled.main`
   /* padding-top: 1rem; */
 
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
   & > * {
     grid-column: 2;
   }

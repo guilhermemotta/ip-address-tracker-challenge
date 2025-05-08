@@ -79,6 +79,7 @@ export default App;
 
 const BackgroundImage = styled.picture`
   @media (min-width: 376px) {
-    height: 17rem;
+    height: 16rem;
+    flex: 1;
   }
 `;

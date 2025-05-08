@@ -45,7 +45,8 @@ export default function AppMap({ lat, long }: AppMapProps) {
     <div
       style={{
         width: "100%",
-        height: "80vh",
+        // height: "80vh",
+        flex: 2,
         position: "relative",
         zIndex: 10,
       }}
