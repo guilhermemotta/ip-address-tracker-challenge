@@ -6,7 +6,8 @@ import Layout from "./components/layout";
 import SearchBar from "./components/search-bar";
 import AppMap from "./components/map";
 import HUD from "./components/hud";
-import Image from "next/image";
+import styled from "styled-components";
+// import Image from "next/image";
 
 const ipfyApiUrl = "https://api.ipify.org?format=json";
 
@@ -40,7 +41,7 @@ function App() {
 
   return (
     <Layout>
-      <picture>
+      <BackgroundImage>
         <source
           media="(max-width: 375px)"
           srcSet="assets/pattern-bg-mobile.png"
@@ -49,8 +50,13 @@ function App() {
           media="(min-width: 376px)"
           srcSet="assets/pattern-bg-desktop.png"
         />
-        <img src="assets/pattern-bg-mobile.png" alt="background pattern" />
-      </picture>
+        <img
+          style={{ width: "100%" }}
+          src="assets/pattern-bg-mobile.png"
+          alt="background pattern"
+        />
+      </BackgroundImage>
+
       <AppMap lat={40.731253} long={-73.996139} />
 
       <HUD>
@@ -70,3 +76,9 @@ function App() {
 }
 
 export default App;
+
+const BackgroundImage = styled.picture`
+  @media (min-width: 376px) {
+    height: 17rem;
+  }
+`;

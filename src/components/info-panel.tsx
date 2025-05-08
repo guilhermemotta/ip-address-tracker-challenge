@@ -48,11 +48,21 @@ const Wrapper = styled.section`
 
   padding-top: 1rem;
   padding-bottom: 1rem;
+
+  @media (min-width: 400px) {
+    height: 160px;
+    flex-direction: row;
+  }
 `;
 
 const InfoGroup = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 400px) {
+    width: 276px;
+    align-items: baseline;
+  }
 `;
 
 export default InfoPanel;

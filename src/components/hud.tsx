@@ -23,4 +23,11 @@ const Wrapper = styled.section`
   & > * {
     grid-column: 2;
   }
+
+  @media (min-width: 400px) {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+
+    top: 1rem;
+  }
 `;

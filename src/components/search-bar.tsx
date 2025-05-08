@@ -41,6 +41,11 @@ const SearchBtn = styled.button`
   height: 60px;
   width: 60px;
 
+  &:hover {
+    background-color: var(--very-dark-gray);
+    cursor: pointer;
+  }
+
   & > img {
     height: 14px;
     margin-left: auto;
