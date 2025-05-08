@@ -28,4 +28,4 @@ dist-ssr
 next--env.d.ts
 dist
 
-.env.*
+.env.*.env.development
