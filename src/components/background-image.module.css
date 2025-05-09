@@ -1,0 +1,10 @@
+.backgroundimage {
+  height: 16rem;
+  /* @media (min-width: 376px) {
+    flex: 1;
+  } */
+}
+
+.backgroundimage > img {
+  height: 100%;
+}

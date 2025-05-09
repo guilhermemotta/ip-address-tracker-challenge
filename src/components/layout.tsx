@@ -1,25 +1,13 @@
 import React from "react";
-import styled from "styled-components";
 
-type LayoutProps = {
+import styles from "./layout.module.css";
+
+interface Props {
   children: React.ReactNode;
-};
-
-function Layout({ children }: LayoutProps) {
-  return <Wrapper>{children}</Wrapper>;
 }
 
-const Wrapper = styled.main`
-  /* padding-top: 1rem; */
-
-  height: 100vh;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-
-  & > * {
-    grid-column: 2;
-  }
-`;
+function Layout({ children }: Props) {
+  return <main className={styles.layout}>{children}</main>;
+}
 
 export default Layout;

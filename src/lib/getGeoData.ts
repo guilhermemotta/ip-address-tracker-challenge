@@ -1,9 +1,14 @@
-interface GeoData {
+import "server-only";
+
+export interface GeoData {
   ip: string;
   location: {
+    city: string;
     country: string;
     region: string;
     timezone: string;
+    lat: string;
+    lng: string;
   };
   domains: string[];
   as: {
@@ -24,7 +29,7 @@ export async function getGeoData(ipAddress: string) {
   }
 
   const res = await fetch(
-    `https://geo.ipify.org/api/v2/country?apiKey=${process.env.IPIFY_API_KEY}&ipAddress=${ipAddress}`
+    `https://geo.ipify.org/api/v2/country,city?apiKey=${process.env.IPIFY_API_KEY}&ipAddress=${ipAddress}`
   );
   if (!res.ok) {
     console.error("Failed to fetch geo data: ", res.statusText);
