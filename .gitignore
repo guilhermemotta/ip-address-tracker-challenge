@@ -23,6 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
+# Next thingies
 .next
 next--env.d.ts
 dist
+
+.env.*
+
+.env.development
