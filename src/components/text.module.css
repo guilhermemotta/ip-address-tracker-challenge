@@ -3,4 +3,8 @@
   font-weight: bold;
   text-align: center;
   font-size: 1.2rem;
+
+  @media (min-width: 1200px) {
+    text-align: start;
+  }
 }

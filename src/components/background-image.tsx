@@ -2,12 +2,16 @@
 
 import styles from "./background-image.module.css";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const BackgroundImage = ({ children }: Props) => (
-  <picture className={styles.backgroundimage}>{children}</picture>
+const BackgroundImage = () => (
+  <picture className={styles.backgroundimage}>
+    <source media="(max-width: 375px)" srcSet="assets/pattern-bg-mobile.png" />
+    <source media="(min-width: 376px)" srcSet="assets/pattern-bg-desktop.png" />
+    <img
+      style={{ width: "100%" }}
+      src="assets/pattern-bg-mobile.png"
+      alt="background pattern"
+    />
+  </picture>
 );
 
-export default BackgroundImage;
+export { BackgroundImage };

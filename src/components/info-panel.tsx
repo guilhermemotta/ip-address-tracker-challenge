@@ -1,13 +1,16 @@
 "use client";
 
-import Label from "./label";
-import Text from "./text";
+import { Label } from "./label";
+import { Text } from "./text";
 
 import styles from "./info-panel.module.css";
 
-type InfoPanelProps = {
+export type InfoPanelProps = {
   ipAddress: string;
-  location?: string;
+  location?: {
+    region: string;
+    city: string;
+  };
   timezone?: string;
   isp?: string;
 };
@@ -22,12 +25,14 @@ function InfoPanel({ ipAddress, location, timezone, isp }: InfoPanelProps) {
 
       <InfoGroup>
         <Label>Location</Label>
-        <Text>{location}</Text>
+        <Text>
+          {location?.city}, {location?.region}
+        </Text>
       </InfoGroup>
 
       <InfoGroup>
         <Label>Timezone</Label>
-        <Text>{timezone}</Text>
+        <Text>UTC {timezone}</Text>
       </InfoGroup>
 
       <InfoGroup>
@@ -42,4 +47,4 @@ const InfoGroup = ({ children }: { children: React.ReactNode }) => (
   <div className={styles.infogroup}>{children}</div>
 );
 
-export default InfoPanel;
+export { InfoPanel };

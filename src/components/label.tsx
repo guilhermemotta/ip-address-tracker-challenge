@@ -17,4 +17,4 @@ const Label = ({ children }: LabelProps) => (
   <div className={styles.label}>{children}</div>
 );
 
-export default Label;
+export { Label };

@@ -1,13 +1,13 @@
-import React from "react";
+import * as React from "react";
 
 import styles from "./layout.module.css";
 
-interface Props {
+type LayoutProps = {
   children: React.ReactNode;
-}
+};
 
-function Layout({ children }: Props) {
+function Layout({ children }: LayoutProps) {
   return <main className={styles.layout}>{children}</main>;
 }
 
-export default Layout;
+export { Layout };
