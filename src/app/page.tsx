@@ -1,5 +1,3 @@
-import { revalidatePath } from "next/cache";
-
 import { Layout } from "../components/layout";
 import { InfoPanel } from "../components/info-panel";
 import { HUD } from "../components/hud";
@@ -7,13 +5,9 @@ import { Title } from "../components/title";
 import { SearchBar } from "../components/search-bar";
 import { BackgroundImage } from "../components/background-image";
 import { MapWrapper } from "../components/map-wrapper";
-import { GeoData, getGeoData } from "../lib/getGeoData";
+import { type GeoData, getGeoData } from "../lib/getGeoData";
 
 import "../index.css";
-
-export function generateStaticParams() {
-  return [{ slug: [""] }];
-}
 
 const ipfyApiUrl = "https://api.ipify.org?format=json";
 
@@ -21,46 +15,47 @@ interface IpfyData {
   ip: string;
 }
 
-let currentGeoData: GeoData | undefined = undefined;
-let badInput = false;
+export const dynamic = "force-dynamic";
 
-export default async function Page() {
-  badInput = false;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+  const search = await searchParams;
   const ipfyResponse = await fetch(ipfyApiUrl);
   const data: IpfyData = await ipfyResponse.json();
   const currentIpAddr = data.ip;
 
-  // currentGeoData = currentGeoData ?? await getGeoData(currentIpAddr);
-  currentGeoData = currentGeoData ?? fakeGeoData;
-
-  const getSearchInput = async (formData: FormData) => {
-    "use server";
-    currentGeoData = await getGeoData(formData.get("search") as string);
-    // TODO: adicionar feedback ao usuário
-    badInput = !currentGeoData;
-    revalidatePath("/");
-  };
+  const currentGeoData = search.query
+    ? await getGeoData(search.query)
+    : await getGeoData(currentIpAddr);
+  // currentGeoData = currentGeoData ?? fakeGeoData;
+  // const currentGeoData = fakeGeoData;
+  const hasErrors = currentGeoData && "errors" in currentGeoData;
 
   return (
     <Layout>
       <BackgroundImage />
 
       <MapWrapper
-        lat={Number(currentGeoData?.location.lat)}
-        long={Number(currentGeoData?.location.lng)}
+        lat={Number(hasErrors ? 0 : currentGeoData.location.lat)}
+        long={Number(hasErrors ? 0 : currentGeoData.location.lng)}
       />
 
       <HUD>
         <Title>IP Address Tracker</Title>
 
-        <SearchBar searchBarAction={getSearchInput} badInput={badInput} />
+        <SearchBar />
 
         <InfoPanel
           // ipAddress={currentIpAddr}
-          ipAddress={currentGeoData?.ip}
-          location={currentGeoData?.location}
-          timezone={currentGeoData?.location.timezone}
-          isp={currentGeoData?.isp}
+          ipAddress={hasErrors ? "" : currentGeoData.ip}
+          location={
+            hasErrors ? { region: "", city: "" } : currentGeoData.location
+          }
+          timezone={hasErrors ? "" : currentGeoData.location.timezone}
+          isp={hasErrors ? "" : currentGeoData.isp}
         />
       </HUD>
     </Layout>

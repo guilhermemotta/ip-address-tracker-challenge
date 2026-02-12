@@ -5,7 +5,7 @@ import L, { Map } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 import IconLocation from "../assets/icon-location.svg";
-import styles from "./map.module.css";
+import styles from "./client-map.module.css";
 
 const locationIcon = L.icon({
   iconUrl: IconLocation.src,

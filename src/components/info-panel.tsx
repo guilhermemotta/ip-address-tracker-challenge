@@ -6,7 +6,7 @@ import { Text } from "./text";
 import styles from "./info-panel.module.css";
 
 export type InfoPanelProps = {
-  ipAddress: string;
+  ipAddress?: string;
   location?: {
     region: string;
     city: string;

@@ -1,4 +1,4 @@
-// import "server-only";
+import "server-only";
 import * as z from "zod";
 
 export type GeoData = {
@@ -22,28 +22,39 @@ export type GeoData = {
   isp: string;
 };
 
-export async function getGeoData(
-  input: string,
-): Promise<GeoData | Error | undefined> {
-  let requestUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${process.env.IPIFY_API_KEY}&`;
-  const ipv4Schema = z.ipv4();
-  const domainSchema = z.string().regex(z.regexes.domain);
+export const querySchema = z.object({
+  search: z.ipv4().or(z.string().regex(z.regexes.domain)),
+});
 
-  if (ipv4Schema.safeParse(input).success) {
-    const { data } = ipv4Schema.safeParse(input);
-    requestUrl += `ipAddress=${data}`;
-  } else if (domainSchema.safeParse(input).success) {
-    const { data } = domainSchema.safeParse(input);
-    requestUrl += `domain=${data}`;
-  } else {
-    console.error("Invalid input:", input);
-    return;
+const ipv4Schema = z.ipv4();
+const domainSchema = z.string().regex(z.regexes.domain);
+
+export async function getGeoData(searchQuery: string) {
+  let requestUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${process.env.IPIFY_API_KEY}&`;
+  const validatedSearch = querySchema.safeParse({
+    search: searchQuery,
+  });
+
+  if (!validatedSearch.success) {
+    return {
+      errors: validatedSearch.error.flatten().fieldErrors,
+    };
   }
 
-  const res = await fetch(requestUrl);
+  const validatedData = validatedSearch.data.search;
+
+  if (ipv4Schema.safeParse(validatedData).success) {
+    const { data } = ipv4Schema.safeParse(validatedData);
+    requestUrl += `ipAddress=${data}`;
+  } else if (domainSchema.safeParse(validatedData).success) {
+    const { data } = domainSchema.safeParse(validatedData);
+    requestUrl += `domain=${data}`;
+  }
+
+  const res = await fetch(requestUrl, { cache: "force-cache" });
   if (!res.ok) {
     console.error("Failed to fetch geo data: ", res.statusText);
-    return { error: { message: "Bad input," } };
+    return { errors: { message: "Failed to fetch data" } };
   }
 
   const data: GeoData = await res.json();
